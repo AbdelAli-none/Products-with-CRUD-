@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@import "tailwindcss";
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --spacing-sm-padd: 2rem;
+  --spacing-lg-padd: 4rem;
+  --spacing-xl-padd: 5rem;
+  --spacing-xl2-padd: 7rem;
+}
+
+@layer {
+  .container {
+    margin-inline: auto;
+    @apply px-4 /* Default */
+              sm:px-sm-padd
+              lg:px-lg-padd
+              xl:px-xl-padd
+              2xl:px-xl2-padd;
+  }
+}

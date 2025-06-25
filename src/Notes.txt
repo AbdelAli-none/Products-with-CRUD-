@@ -1,0 +1,8 @@
+- Start With States
+- Handle The Colors
+- Fix The Errors State
+- Handle Add Product After Right 
+
+
+Problems:
+- When 
