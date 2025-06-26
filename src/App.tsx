@@ -36,7 +36,7 @@ function App() {
   };
 
   // States of Add Product Modal
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
@@ -52,6 +52,7 @@ function App() {
   const [products, setProducts] = useState<IProduct[]>(productsList);
   const [errors, setErrors] = useState(defaultProductErrors);
   const [tempColors, setTempColors] = useState<string[]>([]);
+  const [producttoEditIdx, setProductToEditIdx] = useState<number>(0);
 
   // State of Select Menu - Add Product -
   const [selected, setSelected] = useState(categories[0]);
@@ -119,17 +120,36 @@ function App() {
       description,
       imageURL,
       price,
-      colors: colors,
+      colors,
     });
+
+    const isError = Object.values(errors).some((error) => error !== "");
+    if (isError) {
+      setErrors(errors);
+      return;
+    }
+
+    const updatedProducts = [...products];
+    updatedProducts[producttoEditIdx] = {
+      ...productToEdit,
+      colors: tempColors.concat(productToEdit.colors),
+    };
+
+    setProducts(updatedProducts);
+    setProductToEdit(defaultProductObject);
+    setTempColors([]);
+    closeEditModal();
   };
 
-  const renderProductsList = products.map((product) => {
+  const renderProductsList = products.map((product, idx) => {
     return (
       <ProductCard
         product={product}
         key={product.id}
         openEditModal={openEditModal}
         setProductToEdit={setProductToEdit}
+        idx={idx}
+        setProductToEditIdx={setProductToEditIdx}
       />
     );
   });
@@ -260,14 +280,21 @@ function App() {
             {renderFormInputsEdit("imageURL", "Product Image Link", "imageURL")}
             {renderFormInputsEdit("price", "Product Price", "price")}
           </div>
-          <Select selected={selected} setSelected={setSelected} />
+          <Select
+            selected={productToEdit.category}
+            setSelected={(value) =>
+              setProductToEdit({ ...productToEdit, category: value })
+            }
+          />
 
           <div className="flex space-x-1 mt-4">{renderProductColors}</div>
 
           <div>{errors.tempColors && <ErrorMsg msg={errors.tempColors} />}</div>
 
           <div className="flex flex-wrap items-start justify-start space-x-1 space-y-1 my-4">
-            {renderTempColors}
+            {tempColors.concat(productToEdit.colors).map((color) => (
+              <HexadecimalColor color={color} key={color} />
+            ))}
           </div>
 
           <div className="flex space-x-4">

@@ -48,7 +48,7 @@ export const validateProduct = (product: {
   // Description Product Validation
   if (description.trim().length < 20) {
     errors.description = "your description must be longer!";
-  } else if (description.trim().length > 150) {
+  } else if (description.trim().length > 900) {
     errors.description = "your description must be shorter!";
   }
 
