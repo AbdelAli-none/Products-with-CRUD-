@@ -5,6 +5,4 @@
 
 
 Problems:
-- When change the category the image url doesn't work
-- When edit a product in the terms of colors, if you click on a color that is already exsited in the tempColor of product, it's gonna be duplicated in the list of colors 
 - When you have errors in the model of add product then, close it, that error will appear in the model of edit product 

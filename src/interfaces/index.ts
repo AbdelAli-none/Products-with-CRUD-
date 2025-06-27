@@ -25,3 +25,11 @@ export interface ICategory {
   name: string;
   imageURL: string;
 }
+
+export interface IDefaultErrorsObject {
+  title: string;
+  description: string;
+  imageURL: string;
+  price: string;
+  tempColors: string;
+}

@@ -1,4 +1,4 @@
-import type { IProduct } from "../interfaces";
+import type { IDefaultErrorsObject, IProduct } from "../interfaces";
 import { addCommas, shorten } from "../utils/functions";
 import ProductImage from "./ProductImage";
 import Button from "./UI/Button";
@@ -10,9 +10,27 @@ interface IProps {
   setProductToEdit: (product: IProduct) => void;
   setProductToEditIdx: (idx: number) => void;
   idx: number;
+  openConfirmModal: () => void;
+  setErrors: (errorObj: IDefaultErrorsObject) => void;
 }
 
-const ProductCard = ({ product, openEditModal, setProductToEdit, setProductToEditIdx, idx }: IProps) => {
+const defaultProductErrors = {
+  title: "",
+  description: "",
+  imageURL: "",
+  price: "",
+  tempColors: "",
+};
+
+const ProductCard = ({
+  product,
+  openEditModal,
+  setProductToEdit,
+  setProductToEditIdx,
+  idx,
+  openConfirmModal,
+  setErrors,
+}: IProps) => {
   const { title, description, imageURL, price, colors, category } = product;
 
   const renderCirclesOfColor = colors.map((color, idx) => {
@@ -20,9 +38,15 @@ const ProductCard = ({ product, openEditModal, setProductToEdit, setProductToEdi
   });
 
   const onEdit = () => {
-    openEditModal();
     setProductToEdit(product);
+    openEditModal();
     setProductToEditIdx(idx);
+    setErrors(defaultProductErrors);
+  };
+
+  const onRemove = () => {
+    setProductToEdit(product);
+    openConfirmModal();
   };
 
   return (
@@ -44,7 +68,7 @@ const ProductCard = ({ product, openEditModal, setProductToEdit, setProductToEdi
         <div className="flex items-center">
           <span className="me-3">{category.name}</span>
           <ProductImage
-            imageURL={imageURL}
+            imageURL={category.imageURL}
             alt={title}
             className="w-10 h-10 rounded-full outline-3 border-3 border-transparent outline-blue-400"
           />
@@ -57,7 +81,10 @@ const ProductCard = ({ product, openEditModal, setProductToEdit, setProductToEdi
         >
           Edit
         </Button>
-        <Button className="bg-red-500 hover:bg-red-600 rounded-lg flex-1">
+        <Button
+          className="bg-red-500 hover:bg-red-600 rounded-lg flex-1"
+          onClick={onRemove}
+        >
           Remove
         </Button>
       </div>
